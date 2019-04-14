@@ -23,9 +23,9 @@ if (ONLINE){
 	$dbServer="localhost";
 	$dbUser="previsionpro";
 	$dbPass="A8w1K2m2";
-	$dbDatabase="cme";
+	$dbDatabase="trans";
         
-        $_SERVER['HTTP_HOST'] = 'cme.previsionpro.com';
+        $_SERVER['HTTP_HOST'] = 'trans.previsionpro.com';
 
 	define('BASE_URL', 'http://'.$_SERVER['HTTP_HOST'].'/'); // with the last slash
 
@@ -36,14 +36,14 @@ if (ONLINE){
 	$dbServer="localhost";
 	$dbUser="root";
 	$dbPass="root";
-	$dbDatabase="jpdermainternational";
+	$dbDatabase="trans";
 
 	if( !$_SERVER['HTTP_HOST'] )
 	{
 	 	$_SERVER['HTTP_HOST'] = '127.0.0.1';
 	}
 
-	define('BASE_URL', 'http://'.$_SERVER['HTTP_HOST'].'/techram/medical/'); // with the last slash
+	define('BASE_URL', 'http://'.$_SERVER['HTTP_HOST'].'/medical/trans/'); // with the last slash
 
 	function today(){ return mktime(date("H"),date("i"),date("s"),date("m"),date("d"),date("Y"));}
 }
@@ -63,7 +63,7 @@ define('WEBADMIN_VER','3.7');
 
 # Project
 define('COOKIE','vis'); //Project Identity
-define('PROJECT_NAME','Derma Connect CMS');
+define('PROJECT_NAME','Trans CMS');
 define('PROJECT_VER','1.0');
 
 #Used in the "from" field in all e-mails sent from this e-mail
