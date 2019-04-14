@@ -1,0 +1,18 @@
+#main .module header h3 input {
+	display: none;
+}
+.module {
+	border: 0;
+}
+.projectImg {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: auto;
+	height: auto;
+	max-height: 100px;
+}
+
+.leftBox {
+	padding: 0 20px;
+}

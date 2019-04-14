@@ -1,0 +1,3 @@
+i have commented lines 4,7,8 from file functions_login_session.php
+because it has an errors that included in ajax request back
+also edit line in 14 in ajax_login.php for the same problem

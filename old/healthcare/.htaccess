@@ -1,0 +1,27 @@
+Options +FollowSymLinks
+#Options -Multiviews
+RewriteEngine On
+
+#RewriteBase /
+
+<IfModule mod_headers.c>
+	Header set Access-Control-Allow-Origin "*"
+	Header set Access-Control-Allow-Headers "Content-Type"
+	Header set Access-Control-Allow-Methods: *
+</IfModule>
+
+
+
+########################### Rule of escape exist files
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule .? - [S=20]
+
+########################### Rules of non-exist files
+
+RewriteRule ^(account/)?([a-zA-Z0-9_-]+)(/page-([0-9]*))?/?$		index.php?controller2=$1&controller=$2&page=$4 [L,QSA]
+RewriteRule ^(account/)?([a-zA-Z0-9_-]+)/([0-9]+)(/page-([0-9]*))?/?$		index.php?controller2=$1&controller=$2&id=$3&page=$5 [L,QSA]
+RewriteRule ^(account/)?([a-zA-Z0-9_-]+)/([a-zA-Z0-9-]+)(/page-([0-9]*))?/?$		index.php?controller2=$1&controller=$2&action=$3&page=$5 [L,QSA]
+RewriteRule ^(account/)?([a-zA-Z0-9_-]+)/(.+)/([0-9]+)/([0-9]+)(/page-([0-9]*))?/?$		index.php?controller2=$1&controller=$2&action=$3&catid=$4&id=$5&page=$7 [L,QSA]
+RewriteRule ^(account/)?([a-zA-Z0-9_-]+)/(.+)/([0-9]+)(/page-([0-9]*))?/?$		index.php?controller2=$1&controller=$2&action=$3&id=$4&page=$6 [L,QSA]
+

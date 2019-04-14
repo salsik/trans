@@ -1,0 +1,6 @@
+[03-Mar-2015 00:24:11 America/Denver] PHP Fatal error:  Out of memory (allocated 262144) (tried to allocate 16384 bytes) in /home/previsio/public_html/healthcare/backstage/_top.php on line 1
+[20-Mar-2015 00:02:52 America/Denver] PHP Warning:  mysql_connect(): Too many connections in /home/previsio/public_html/healthcare/includes/conn.php on line 6
+[20-Mar-2015 00:54:51 America/Denver] PHP Warning:  mysql_connect(): Too many connections in /home/previsio/public_html/healthcare/includes/conn.php on line 6
+[20-Mar-2015 00:54:57 America/Denver] PHP Warning:  mysql_connect(): Too many connections in /home/previsio/public_html/healthcare/includes/conn.php on line 6
+[06-Aug-2015 06:41:54 America/Denver] PHP Warning:  move_uploaded_file(../uploads/polls/08MM1765_capecitabine_posologic+ruler_w.unlocked_Page_5.jpg): failed to open stream: No such file or directory in /home/previsio/public_html/healthcare/includes/files.php on line 101
+[06-Aug-2015 06:41:54 America/Denver] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/php3KP9Zp' to '../uploads/polls/08MM1765_capecitabine_posologic+ruler_w.unlocked_Page_5.jpg' in /home/previsio/public_html/healthcare/includes/files.php on line 101

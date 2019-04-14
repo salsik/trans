@@ -1,0 +1,2 @@
+SELECT * FROM category 
+                        JOIN resellers_index as resindex ON resindex.cat_id = category.id where resindex.index_id=72 and category.title='Irbid'1

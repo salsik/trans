@@ -1,0 +1,209 @@
+@charset "utf-8";
+/* CSS Document */
+.footer_text{
+font-family:Arial, Helvetica, sans-serif;
+font-size:10px;
+color:#ebce0d;
+font-weight:bold;
+}
+.prod_det_text{
+font-family:Arial, Helvetica, sans-serif;
+color:#656565;
+font-size:13px;
+}
+.prod_remove{
+font-family:Arial, Helvetica, sans-serif;
+color:#656565;
+font-size:9px;
+}
+.prod_det{
+font-family:Arial, Helvetica, sans-serif;
+color:#656565;
+font-size:13px;
+padding-left:5px;
+}
+.view_basket a{
+font-family:Arial, Helvetica, sans-serif;
+color:#a3a3a3;
+font-size:12px;
+font-weight:bold;
+text-decoration:none;
+}
+.view_basket {
+font-family:Arial, Helvetica, sans-serif;
+color:#a3a3a3;
+font-size:12px;
+font-weight:bold;
+text-decoration:none;
+}
+.productssss{
+/*background:url(../images/prod_test_thumb.jpg) no-repeat; 
+*/padding:2px 1px 1px 1px; 
+cursor:pointer;
+}
+.product_name{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#494848;
+}
+.alert{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#FF0000;
+}
+.product_name_over{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#f40e00;
+}
+.regular_text{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#494848;
+}
+.prod11_shadow{
+background:url(../images/prod11_shadow.jpg) bottom right no-repeat;
+}
+.prod12_shadow{
+background:url(../images/prod12_shadow.jpg) bottom no-repeat;
+}
+.prod13_shadow{
+background:url(../images/prod13_shadow.jpg) bottom left no-repeat;
+}
+.prod21_shadow{
+background:url(../images/prod21_shadow.jpg) right no-repeat;
+}
+.prod22_shadow{
+background:url(../images/prod22_shadow.jpg) left no-repeat;
+}
+.prod31_shadow{
+background:url(../images/prod31_shadow.jpg) top right no-repeat;
+}
+.prod32_shadow{
+background:url(../images/prod32_shadow.jpg) top right no-repeat;
+}
+.prod33_shadow{
+background:url(../images/prod33_shadow.jpg) top left no-repeat;
+}
+
+
+
+.prod11_over_shadow{
+background:url(../images/prod11_over_shadow.jpg) bottom right no-repeat;
+}
+.prod12_over_shadow{
+background:url(../images/prod12_over_shadow.jpg) bottom no-repeat;
+}
+.prod13_over_shadow{
+background:url(../images/prod13_over_shadow.jpg) bottom left no-repeat;
+}
+
+
+
+.prod31_over_shadow{
+background:url(../images/prod31_over_shadow.jpg) top right no-repeat;
+}
+.prod32_over_shadow{
+background:url(../images/prod32_over_shadow.jpg) top right no-repeat;
+}
+.prod33_over_shadow{
+background:url(../images/prod33_over_shadow.jpg) top left no-repeat;
+}
+
+.menu{
+background:#FFFFFF;
+font-family: sans-serif,Arial, Helvetica;
+font-size:13px;
+padding-top:10px;
+color:#707070;
+cursor:pointer;
+font-weight:bold;
+}
+.menu_over{
+font-family: sans-serif,Arial, Helvetica;
+font-size:13px;
+background:#ffffff;
+padding-top:10px;
+color:#f40e00;
+cursor:pointer;
+font-weight:bold;
+
+}
+#banners
+{
+/*   width:500px;
+        height:275px;
+        border:2px solid #cccccc;*/
+}
+
+#banners div
+{
+
+       height:150px;
+        display:none;
+        margin:0px;
+
+}
+
+#banners #banner1
+{
+        display:block;
+}
+
+#banners div span
+{
+       
+        position:relative;
+        display:block; 
+        line-height:1.5em;
+		top:16px;
+        right:10px;
+        background:#fff;
+        font-size:11px;
+		font-family:Arial, Helvetica, sans-serif
+        padding:5px;
+        opacity:0.7;//standard
+        filter:alpha(opacity=50);//internet explorer
+        -moz-opacity:.50;//older firefox versions
+        
+}
+
+#banners ul
+{
+
+        width:auto;
+        height:25px;
+        /*background:#f5f5f5;*/
+        margin:0px;
+}
+
+#banners ul li
+{
+        display:inline;
+        width:10px;
+}
+
+#banners ul li a
+{
+        text-decoration:none;
+        padding:2px;
+        line-height:2.5em;
+        margin:1px;
+        color:#f81f1b;
+        height:10px;
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:10px;
+        font-weight:bold;
+}
+
+#banners ul li a:hover
+{
+        background:#f5f5f5;
+        color:#f81f1b;;  
+}
+.home_link{
+cursor:pointer;
+}
+.link{
+cursor:pointer;
+}

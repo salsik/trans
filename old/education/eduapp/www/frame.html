@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>WebApp</title>
+
+		<style>
+		body {
+			padding: 0px;
+			margin: 0px;
+			height: 100%;
+			overflow: hidden;
+		}
+		.device {
+		    background: none repeat scroll 0 0 #0A0809;
+		    border-radius: 25px 25px 0 0;
+		    position: absolute;
+			left: 20%;
+			right: 20%;
+			bottom: 0px;
+		}
+		.device {
+		    padding: 75px 10px 0;
+			top: 10px;
+			left: 30%;
+			right: 30%;
+		}
+		.device.landscape {
+		    padding: 10px 75px 0;
+			top: 50px;
+			left: 10%;
+			right: 10%;
+		}
+		</style>
+<script type="text/javascript">
+<!--
+	function switchDefice() {
+		var device = document.getElementById('device');
+		if (device.className.indexOf('landscape') > 0 ) {
+			device.className = 'device';
+		}
+		else {
+			device.className = 'device landscape';
+		}
+	}
+//-->
+</script>
+	</head>
+	<body>
+		<a href="#" onclick="switchDefice();">Switch</a>
+		<div id="device" class="device landscape">
+			<iframe width="100%" height="100%" frameborder="0" scrolling="auto" src="index.html"></iframe>
+		</div>
+	</body>
+</html>

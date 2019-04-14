@@ -1,0 +1,229 @@
+BODY{
+	margin:0 0 0 0px;
+}
+
+.login_top{
+	background:url(../images/loginbg.jpg) repeat-x top;
+}
+
+.alert{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+    color:#ee2e29;
+}
+
+.title{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:bold;
+    color:#ee2e29;
+}
+
+TD{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#9aa1ad;
+}
+
+.input{
+	border:1px solid #9aa1ad;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:11px;
+	color:#9aa1ad;
+}
+
+.redbutton{
+	border:0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:11px;
+	color:#FFFFFF;
+	background:url(../images/redbutton.jpg) no-repeat;
+	width:45px;
+	height:21px;
+	cursor:pointer;
+}
+
+.graybutton{
+	border:0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:11px;
+	color:#FFFFFF;
+	background:url(../images/graybutton.jpg) no-repeat;
+	width:45px;
+	height:21px;
+	cursor:pointer;
+}
+
+A.info
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+    color:#ee2e29;
+	text-decoration:underline;
+}
+A.info:hover
+{
+	text-decoration:none;
+}
+
+.header{ 
+	cursor: hand;
+	cursor: pointer;
+	padding: 5px 29px 0px 10px;;
+	border: solid #FFFFFF 1px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:bold;
+	color:#8b93a1;
+	background:url(../images/closed.jpg) center right no-repeat #eceef0;
+	height:24px;
+	text-align:right;
+}
+
+.openheader{ 
+	background:url(../images/open.jpg) center right no-repeat #ffffff;
+}
+
+.content{ 
+	padding: 0px 0px 0px 0px;;
+}
+
+TABLE.listing TH{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:bold;
+	color:#FFFFFF;
+	background:#666666;
+}
+
+TABLE.listing TD{
+	border: solid #BFBFBF 1px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	color:#8b93a1;
+}
+
+TABLE.listing A{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	color:#ee2e29;
+	text-decoration:none;
+}
+
+TABLE.listing A:hover{
+	color:#8b93a1;
+	text-decoration:underline;
+}
+
+.search{ 
+	cursor: hand;
+	cursor: pointer;
+	background:url(../images/search.png) center right no-repeat;
+	height:32px;
+	width:32px;
+	border:0px;
+}
+
+.delete{ 
+	cursor: hand;
+	cursor: pointer;
+	background:url(../images/delete.png) center right no-repeat;
+	height:32px;
+	width:32px;
+	border:0px;
+}
+
+.add{ 
+	cursor: hand;
+	cursor: pointer;
+	background:url(../images/add.png) center right no-repeat;
+	height:32px;
+	width:32px;
+	border:0px;
+}
+
+.modify{ 
+	cursor: hand;
+	cursor: pointer;
+	background:url(../images/modify.png) center right no-repeat;
+	height:32px;
+	width:32px;
+	border:0px;
+}
+
+.save{ 
+	cursor: hand;
+	cursor: pointer;
+	background:url(../images/apply.png) center right no-repeat;
+	height:32px;
+	width:32px;
+	border:0px;
+}
+
+.cancel{ 
+	cursor: hand;
+	cursor: pointer;
+	background:url(../images/cancel.png) center right no-repeat;
+	height:32px;
+	width:32px;
+	border:0px;
+}
+
+.submenu{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#FFFFFF;
+	background:url(../images/submenu.jpg) right no-repeat;
+	text-align:right;
+	padding:0 20 0 0px;
+	height:18px;
+}
+
+.submenu A{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+.submenuopen{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#8b93a1;
+	background:url(../images/submenuopen.jpg) center right no-repeat #ffffff;
+	text-align:right;
+	padding:0 20 0 0px;
+	height:18px;
+}
+
+.submenuopen A{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#8b93a1;
+	text-decoration:none;
+}
+
+tbody#trContainer tr {
+	cursor: move;
+}
+
+.trhover {
+	background:#efefef;
+}
+
+tbody#trContainer tr:hover {
+	background:#efefef;
+}
+.viewInfoLabel{
+font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:bold; color:#8b93a1; width:150px;
+	}
+.viewInfoDetails{
+font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:bold; color:#000000;
+	}	
+	.floatl{ float:left}
+.FormCol1{ padding-bottom:3px; padding-top:3px;width:250px;}
+.FormCol2{ text-align:left}
+.FormTitle{ font-size:13px;font-family:Arial, Helvetica, sans-serif;font-weight:bold; color:#C69459;}
+

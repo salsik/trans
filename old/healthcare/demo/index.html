@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Prevision</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="author" content="Codrops" />
+        <link rel="shortcut icon" href="../favicon.ico">
+        <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
+        <link rel="stylesheet" type="text/css" href="fonts/myriadpro/stylesheet.css" />
+        <link rel="stylesheet" type="text/css" href="fonts/league_gothic/stylesheet.css" />
+        <link rel="stylesheet" type="text/css" href="css/component.css" />
+        <link rel="stylesheet" type="text/css" href="js/jscrollpane/jquery.jscrollpane.css" />
+        <link rel="stylesheet" type="text/css" href="css/flexslider.css" />
+
+        <script src="js/jquery-1.10.2.min.js"></script>
+        <script src="js/jquery.cookie.js"></script>
+        <script src="js/ICanHaz.min.js"></script>
+        <script src="js/infiniScroll.js"></script>
+        <script src="js/jscrollpane/jquery.mousewheel.js"></script>
+        <script src="js/jscrollpane/mwheelIntent.js"></script>
+        <script src="js/jscrollpane/jquery.jscrollpane.min.js"></script>
+        <script src="js/jquery.flexslider-min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <script src="js/scripts.base.js"></script>
+        <script src="js/scripts.holders.js"></script>
+        <script>
+            var $api = 'http://localhost:8888/prevision/healthcare/api.php';
+
+            var $loginKey = false;
+            var $account = {};
+            var $reseller = {};
+            var $categories = {};
+            var _menu = false;
+
+            var _cookie_login = false;
+            if ($.cookie("loginKey")) {
+                _cookie_login = true;
+                _api('get', 'is_login', {key: $.cookie("loginKey")}, function (response) {
+                    _cookie_login = false;
+                    if (!response.error) {
+                        _do_login(response);
+                    }
+                });
+            }
+
+            $('<img />').attr('src', 'images/bg-spla.png').load(function () {
+                $('<img />').attr('src', 'images/logo-spla.png').load(function () {
+                    $(document).ready(function () {
+                        setTimeout(function () {
+                            var interval = setInterval(function () {
+                                if (!_cookie_login) {
+                                    clearInterval(interval);
+                                    $('#spla').fadeOut();
+                                }
+                            }, 100);
+                        }, 2000);
+                    });
+                });
+            });
+
+        </script>
+        <script src="js/modernizr.custom.js"></script>
+    </head>
+    <body>
+        <div id="spla">
+            <div id="spla-logo"></div>
+            <div id="spla-dots"></div>
+            <img id="spla-img" src="images/bg-spla.png" />
+        </div>
+        <div class="container">
+            <!-- Push Wrapper -->
+            <div class="mp-pusher" id="mp-pusher">
+
+                <!-- mp-menu -->
+                <nav id="mp-menu" class="mp-menu">
+                    <div class="mp-level">
+                        <h2 id="app_name">Sections</h2>
+                        <div id="scroll">
+                            <ul>
+                                <!-- 							<li><span class="fa fa-search"><input class="menu-search" type="text" name="search" placeholder="Search" /></span></li> -->
+                                <li><a class="fa fa-home" href="#home">Home</a></li>
+                                <li><a class="fa fa-rss" href="#site-news">Prevision News</a></li>
+                                <li><a class="fa fa-font" href="#about-us">About Us</a></li>
+                                <li><a class="fa fa-edit" href="#services">Services</a></li>
+
+                                <li class="isLoggedin"><a class="fa fa-th" href="#reseller-news"><span class="vnav-counter">15</span><span class="rname">Reseller</span> News</a></li>
+                                <li class="isLoggedin"><a class="fa fa-files-o" href="#reseller-files"><span class="vnav-counter">15</span><span class="rname">Reseller</span> Files</a></li>
+                                <li class="isLoggedin"><a class="fa fa-inbox" href="#reseller-contact"><span class="vnav-counter">15</span>Contact <span class="rname">Reseller</span></a></li>
+                                <li class="isLoggedin"><a class="fa fa-upload" href="#reseller-upload">Add Patient</a></li>
+
+                                <li class="isLoggedin"><a class="fa fa-circle" href="#reseller-polls"><span class="rname">Reseller</span> Polls</a></li>
+                                <li class="isLoggedin"><a class="fa fa-flag" href="#reseller-quiz"><span class="rname">Reseller</span> Quiz</a></li>
+
+                                <li class="isNotLoggedin"><a class="fa fa-key" href="#login">Login</a></li>
+                                <li class="isLoggedin"><a class="fa fa-sign-out" href="#logout">LogOut</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!-- /mp-menu -->
+
+                <div class="scroller"><!-- this is for emulating position fixed of the nav -->
+                    <div class="scroller-inner">
+                        <!-- Top Navigation -->
+                        <div class="content_box clearfix">
+                            <div id="header" class="clearfix">
+                                <div id="inner-header">
+                                    <a href="#" id="trigger" class="menu-icon menu-trigger fa fa-tasks">&nbsp;</a>
+
+                                    <span id="Notification" class="isLoggedin notification-list" tabindex="1">
+                                        <span class="menu-icon fa fa-bell notification-icon"><span class="counter"></span></span>
+                                        <ul class="dropdown">
+                                            <script id="template_notification" type="text/html">
+                                                <li><a href="#site-news-details" data-id="{{id}}">{{message}}</a></li>
+                                            </script>
+                                        </ul>
+                                    </span>
+                                    <a href="#settings" class="isLoggedin menu-icon fa fa-gear">&nbsp;</a>
+                                </div>
+                            </div>
+
+                            <div id="holders">
+                                <div class="holders" id="home" data-callback="get_home_site_news">
+
+                                    <div class="content">
+                                        <div id="sliders" >
+                                            <div class="flexslider-container">
+                                                <div class="flexslider">
+                                                    <ul class="slides">
+                                                        <li><a href="#services"><img src="slides/1.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/2.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/3.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/4.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/5.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/6.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/7.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/8.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/9.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/10.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/11.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/12.png" /></a></li>
+                                                        <li><a href="#services"><img src="slides/13.png" /></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="textBox">
+                                            <div class="title">About Us</div>
+                                            <div class="text">Prevision is a leading online healthcare application that focuses on enriching and improving the medical knowledge and awareness of the doctors and the patients. We are a society of professional experts known for our practical expertise, reliability and trustworthiness.</div>
+
+                                            <div class="read-more">
+                                                <a href="#about-us">Read More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="banner center" data-banner="home_banner" ></div>
+
+                                    <h1>LATEST <span class="color">NEWS</span></h1>
+
+                                    <div class="content">
+                                        <div class="news_list listings items"></div>
+                                    </div>
+                                    <script id="template_home_site_news" type="text/html">
+                                        <div class="item">
+                                            <div class="image">
+                                                <a href="#site-news-details" data-id="{{id}}"><img src="{{image}}"></a>
+                                            </div>
+                                            <div class="details">
+                                                <div class="titleBox">
+                                                    <span class="title"><a href="#site-news-details" data-id="{{id}}">{{title}}</a></span>
+                                                </div>
+                                                <div class="description">{{{description}}}</div>
+                                                <div class="link">{{link}}</div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        </script>
+                                    </div>
+                                    <div class="holders" id="about-us">
+
+                                        <div class="content">
+
+                                            <h2>Who we are</h2>
+                                            <p>Prevision is a leading online healthcare application that focuses on enriching and improving the medical knowledge and awareness of the doctors and the patients. We are a society of professional experts known for our practical expertise, reliability and trustworthiness.</p>
+
+                                            <h2>Vision</h2>
+                                            <p>We take your knowledge to a higher level of credibility, enhancement and enrichment.</p>
+
+                                            <h2>Mission</h2>
+                                            <p>“Prevision” is a foremost healthcare application and a leading advisor in medical solutions. We work with Pharmaceutical companies hand in hand, to reveal their value opportunities, enhance their awareness challenges and increase their experience.
+                                                <br />We have a reputation of providing medical personal service and great customer relationships; this is what makes us different from other healthcare application. We listen to our customers and we appreciate their needs. We come up with medical news and services that integrate with their ambitions. We are responsive and skilled to customize accurate therapeutic solutions
+                                            </p>
+
+                                            <h2>Values</h2>
+                                            <p>Credibility, perfection, up-to-date, respect for the individual, delivering value, are some of our values. We build relationships with our clients, to provide them with latest reliable medical news and solutions. Our dedication to both our clients' knowledge and our own principles is what sets” Prevision” apart from others, as experienced qualified services.</p>
+
+                                            <h2>Approach</h2>
+                                            <p>“Prevision” application believes in enhancing the medical solutions. We know that trustworthy therapeutic solutions boost the utmost knowledge of our clients.</p>
+
+                                            <h2>Risk Management</h2>
+                                            <p>As confident advisors, we are responsible to sustain the maximum of proficient values. “Prevision” risk management sector incorporates a devoted group of experts responsible for the risk management.</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="holders" id="services">
+                                        <!-- 									<h1>Services</h1> -->
+
+                                        <div class="content">
+                                            <h2>Sectors we serve</h2>
+                                            <ul class="ul">
+                                                <li><b>Healthcare Firms</b>
+                                                    <br>Healthcare firms are facing tense changes in customer behavior, market variations and demands. “Prevision” cooperates with healthcare companies to provide patients with better value and innovation and minimize the cost of operating systems. We also assist pharmaceutical manufacturers to become more successful in daily changing markets—which mean ensuring their products contributing to favorable and demonstrable outcomes and streamline costs in the face of increasing price pressure.</li>
+
+                                                <li><b>Medical technologies</b>
+                                                    <br>“Prevision” helps medical technology clients to develop strategies to encourage cost-effective improvements and focus on the needs of a wider range of constituents.</li>
+                                            </ul>
+
+
+
+                                            <h2>Prevision practices</h2>
+                                            <ul class="ul">
+                                                <li>Customized Researches and Studies</li>
+                                                <li>Updated medical news</li>
+                                                <li>Expert Plans and Solutions</li>
+                                                <li>Professional Training sessions</li>
+                                                <li>Medical Event Organization
+                                                    <ul>
+                                                        <li>Medical Event Planning</li>
+                                                        <li>International Speakers Endorsement</li>
+                                                    </ul>
+                                                </li>
+                                                <li>Prevision Digital Services
+                                                    <ul>
+                                                        <li>Websites, Software programs and Online Applications</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- ######################## Site News ######################## -->
+
+                                    <div class="holders" id="site-news" data-callback="get_site_news">
+
+                                        <div class="banner center" data-banner="top_banner" ></div>
+                                        <h1>Prevision <span class="color">News</span></h1>
+
+                                        <div class="content">
+
+                                            <div class="items listings listings_banners"></div>
+                                            <div class="load_more"></div>
+                                            <script id="template_site_news" type="text/html">
+                                                <div class="item">
+                                                    <div class="image">
+                                                        <img src="{{image}}">
+                                                    </div>
+                                                    <div class="details">
+                                                        <div class="titleBox">
+                                                            <span class="title"><a href="#site-news-details" data-id="{{id}}" data-type="{{type}}">{{title}}</a></span>
+                                                            <span class="date">{{date}}</span>
+                                                        </div>
+                                                        <div class="description">{{{description}}}</div>
+                                                        <div class="link">{{link}}</div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                </script>
+                                            </div>
+                                            <div class="banner center" data-banner="bottom_banner" ></div>
+                                        </div>
+                                        <div class="holders" id="site-news-details" data-callback="get_site_news_details">
+
+                                            <div class="banner center" data-banner="top_banner" ></div>
+                                            <h1>
+                                                <a href="#site-news" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                Prevision <span class="color">News</span>
+                                            </h1>
+
+                                            <div class="content">
+
+                                                <div class="detailsBox"></div>
+                                                <script id="template_site_news_details" type="text/html">
+                                                    <div class="imageTitleBox">
+                                                        <div class="image">
+                                                            <img src="{{image}}" class="maxWidth">
+                                                        </div>
+                                                        <div class="titleBox">
+                                                            <span class="title">{{title}}</span>
+                                                            <span class="date">{{date}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="description">{{{description}}}</div>
+                                                    </script>
+                                                </div>
+                                                <div class="banner center" data-banner="bottom_banner" ></div>
+                                            </div>
+
+                                            <!-- ######################## Reseller News ######################## -->
+
+                                            <div class="holders" id="reseller-news" data-callback="get_reseller_news">
+
+                                                <div class="banner center" data-banner="top_banner_private" ></div>
+                                                <h1><span class="rname">Reseller</span> <span class="color">News</span></h1>
+
+                                                <div class="content">
+                                                    <div class="items listings listings_banners_private"></div>
+                                                    <div class="load_more"></div>
+                                                    <script id="template_reseller_news" type="text/html">
+                                                        <div class="item">
+                                                            <div class="image">
+                                                                <a href="#reseller-news-details" data-id="{{id}}"><img src="{{image}}"></a>
+                                                            </div>
+                                                            <div class="details">
+                                                                <div class="titleBox">
+                                                                    <span class="title"><a href="#reseller-news-details" data-id="{{id}}">{{title}}</a></span>
+                                                                    <span class="date">{{date}}</span>
+                                                                    <div class="clear"></div>
+                                                                </div>
+                                                                <div class="description">{{{description}}}</div>
+                                                                <div class="link">{{link}}</div>
+                                                            </div>
+
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        </script>
+                                                    </div>
+                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                </div>
+                                                <div class="holders" id="reseller-news-details" data-callback="get_reseller_news_details">
+
+                                                    <div class="banner center" data-banner="top_banner_private" ></div>
+                                                    <h1>
+                                                        <a href="#reseller-news" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                        <span class="rname">Reseller</span> <span class="color">News</span>
+                                                    </h1>
+
+                                                    <div class="content">
+                                                        <div class="detailsBox"></div>
+                                                        <script id="template_reseller_news_details" type="text/html">
+
+                                                            <div class="imageTitleBox">
+                                                                <div class="image">
+                                                                    <img src="{{image}}" class="maxWidth">
+                                                                </div>
+                                                                <div class="titleBox">
+                                                                    <span class="title">{{title}}</span>
+                                                                    <span class="date">{{date}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="description">{{{description}}}</div>
+                                                            </script>
+                                                        </div>
+                                                        <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                    </div>
+
+                                                    <!-- ######################## Reseller Contact ######################## -->
+
+                                                    <div class="holders" id="reseller-contact" data-callback="get_reseller_contact">
+
+                                                        <div class="banner center" data-banner="top_banner_private" ></div>
+
+                                                        <h1>
+                                                            <a href="#reseller-contact-add" class="icon fa fa-pencil-square">&nbsp;</a>
+                                                            <span>Contact <span class="rname color">Reseller</span></span>
+                                                        </h1>
+
+                                                        <div class="content">
+
+                                                            <div class="items listings"></div>
+                                                            <div class="load_more"></div>
+                                                            <script id="template_reseller_contact" type="text/html">
+                                                                <div class="item">
+                                                                    <div class="details">
+                                                                        <div class="titleBox">
+                                                                            <span class="title"><a href="#reseller-contact-details" data-id="{{id}}">{{title}}</a></span>
+                                                                            <span class="date">{{date}}</span>
+                                                                        </div>
+                                                                        <div class="description">{{{description}}}</div>
+                                                                        <div class="info"><b>Last Update:</b> {{{last_update}}}</div>
+                                                                    </div>
+
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                                </script>
+                                                            </div>
+                                                            <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                        </div>
+
+                                                        <div class="holders" id="reseller-contact-details" data-callback="get_reseller_contact_details">
+
+                                                            <div class="banner center" data-banner="top_banner_private" ></div>
+                                                            <h1>
+                                                                <a href="#reseller-contact" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                                <a href="#reseller-contact-add" class="icon menu-back fa fa-pencil-square">&nbsp;</a>
+                                                                <span>Contact <span class="rname color">Reseller</span></span>
+                                                            </h1>
+
+                                                            <div class="content">
+
+                                                                <div class="detailsBox"></div>
+                                                                <div class="items listings"></div>
+                                                                <div class="load_more"></div>
+
+                                                                <div class="reply hide">
+                                                                    <form action="#" method="post" id="question_reply_form" onsubmit="return _reseller_contact_reply(this);">
+                                                                        <div class="errorHolder">
+                                                                            <div class="errors"></div>
+                                                                        </div>
+
+                                                                        <fieldset>
+                                                                            <label>Reply</label>
+                                                                            <textarea name="question_reply" class="textarea question_reply" ></textarea>
+                                                                        </fieldset>
+                                                                        <fieldset class="submitHolder">
+                                                                            <input class="submit" type="submit" value="Send Reply" />
+                                                                        </fieldset>
+                                                                    </form>
+                                                                </div>
+                                                                <script id="template_reseller_contact_detailsBox" type="text/html">
+                                                                    <div class="titleBox">
+                                                                        <span class="title">{{title}}</span>
+                                                                        <span class="date">{{date}}</span>
+                                                                    </div>
+                                                                    <div class="image">
+                                                                        <img src="{{image}}" class="maxWidth">
+                                                                    </div>
+                                                                    <div class="description">{{{description}}}</div>
+                                                                    <br /><br /><br />
+                                                                    <h2>Replies</h2>
+                                                                    </script>
+                                                                    <script id="template_reseller_contact_replies" type="text/html">
+                                                                        <div class="item">
+                                                                            <div class="details">
+                                                                                <div class="titleBox">
+                                                                                    <span class="title"><b>From:</b> {{reply_from}} @{{time}} {{date}}</span>
+                                                                                </div>
+                                                                                <div class="description">{{{description}}}</div>
+                                                                            </div>
+
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+                                                                        </script>
+                                                                    </div>
+                                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                </div>
+
+                                                                <div class="holders" id="reseller-contact-add">
+
+                                                                    <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                    <h1>
+                                                                        <a href="#reseller-contact" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                                        <span>Contact <span class="rname color">Reseller</span></span>
+                                                                    </h1>
+
+                                                                    <div class="content">
+
+                                                                        <div class="reply">
+                                                                            <form action="#" method="post" id="question_add_form" onsubmit="return _reseller_contact_add(this);">
+                                                                                <div class="errorHolder">
+                                                                                    <div class="errors"></div>
+                                                                                </div>
+
+                                                                                <fieldset>
+                                                                                    <label>Contact Name</label>
+                                                                                    <input class="input contact_name" type="text" name="contact_name" />
+                                                                                </fieldset>
+                                                                                <fieldset>
+                                                                                    <label>Contact Email</label>
+                                                                                    <input class="input contact_email" type="text" name="contact_email" />
+                                                                                </fieldset>
+                                                                                <fieldset>
+                                                                                    <label>Contact Phone</label>
+                                                                                    <input class="input contact_phone" type="text" name="contact_phone" />
+                                                                                </fieldset>
+                                                                                <fieldset>
+                                                                                    <label>Contact Address</label>
+                                                                                    <input class="input contact_address" type="text" name="contact_address" />
+                                                                                </fieldset>
+
+
+                                                                                <fieldset>
+                                                                                    <label>Title</label>
+                                                                                    <input class="input question_title" type="text" name="question_title" />
+                                                                                </fieldset>
+                                                                                <fieldset>
+                                                                                    <label>Details</label>
+                                                                                    <textarea name="question_description" class="textarea question_description" ></textarea>
+                                                                                </fieldset>
+                                                                                <fieldset class="submitHolder">
+                                                                                    <input class="submit" type="submit" value="Send Question" />
+                                                                                </fieldset>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                </div>
+
+
+
+                                                                <!-- ######################## Reseller Polls ######################## -->
+
+                                                                <div class="holders" id="reseller-polls" data-callback="get_reseller_polls">
+
+                                                                    <div class="banner center" data-banner="top_banner_private" ></div>
+
+                                                                    <h1>
+                                                                        <span><span class="rname color">Reseller</span> Polls</span>
+                                                                    </h1>
+
+                                                                    <div class="content">
+
+                                                                        <div class="items listings"></div>
+                                                                        <div class="load_more"></div>
+                                                                        <script id="template_reseller_poll" type="text/html">
+                                                                            <div class="item">
+                                                                                <div class="details">
+                                                                                    <div class="titleBox">
+                                                                                        <span class="title"><a href="#reseller-poll" data-id="{{id}}">{{title}}</a></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="clearfix"></div>
+                                                                            </div>
+                                                                            </script>
+                                                                        </div>
+                                                                        <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                    </div>
+
+                                                                    <div class="holders" id="reseller-poll" data-callback="get_reseller_poll">
+
+                                                                        <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                        <h1>
+                                                                            <span><span class="rname color">Reseller</span> Polls</span>
+                                                                        </h1>
+
+                                                                        <div class="content content1">
+
+                                                                            <div class="detailsBox"></div>
+                                                                            <form action="#" method="post" onsubmit="_poll_reply(this);
+                                                                                    return false;" >
+                                                                                <div class="errorHolder">
+                                                                                    <div class="errors"></div>
+                                                                                </div>
+                                                                                <div class="items listings"></div>
+                                                                                <br />
+                                                                                <fieldset class="submitHolder">
+                                                                                    <input class="submit" type="submit" value="Send" />
+                                                                                </fieldset>
+                                                                            </form>
+
+                                                                            <script id="template_reseller_poll_detailsBox" type="text/html">
+                                                                                <div class="titleBox">
+                                                                                    <span class="title">{{title}}</span>
+                                                                                </div>
+                                                                                <div class="description">{{{description}}}</div>
+                                                                                <br /><br />
+                                                                                &nbsp;
+                                                                                </script>
+                                                                                <script id="template_reseller_poll_options" type="text/html">
+                                                                                    <label class="item">
+                                                                                        <span class="title"><input type="radio" class="option" name="option" value="{{id}}" /> {{title}}</span>
+                                                                                    </label>
+                                                                                    </script>
+                                                                                    <script id="template_reseller_poll_options_text" type="text/html">
+                                                                                        <label class="item">
+                                                                                            <span class="title"><input disabled="disabled" {{checked}} type="radio" class="option" name="option" value="{{id}}" /> {{title}}</span>
+                                                                                        </label>
+                                                                                        </script>
+                                                                                        <script id="template_reseller_poll_options_text_old" type="text/html">
+                                                                                            <label class="item {{className}}">
+                                                                                                <span class="title">{{title}}</span>
+                                                                                            </label>
+                                                                                            </script>
+                                                                                        </div>
+
+                                                                                        <div class="content content2 hide">
+                                                                                            Thank you for answering.
+                                                                                        </div>
+                                                                                        <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                    </div>
+                                                                                    <!-- ######################## Reseller Quiz ######################## -->
+
+                                                                                    <div class="holders" id="reseller-quiz" data-callback="get_reseller_quiz">
+
+                                                                                        <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                        <h1>
+                                                                                            <span><span class="rname color">Reseller</span> Quiz</span>
+                                                                                        </h1>
+
+                                                                                        <div class="content content1">
+
+                                                                                            <div class="detailsBox"></div>
+                                                                                            <form action="#" method="post" onsubmit="_quiz_reply(this);return false;" >
+                                                                                                <div class="errorHolder">
+                                                                                                    <div class="errors"></div>
+                                                                                                </div>
+                                                                                                <div class="items listings"></div>
+                                                                                                <br />
+                                                                                                <fieldset class="submitHolder">
+                                                                                                    <input class="submit" type="submit" value="Send" />
+                                                                                                </fieldset>
+                                                                                            </form>
+
+                                                                                            <script id="template_reseller_quiz_empty" type="text/html">
+                                                                                                <div class="titleBox">
+                                                                                                    <span class="title">No Competition available for this month.</span>
+                                                                                                </div>
+                                                                                                </script>
+                                                                                                <script id="template_reseller_quiz_detailsBox" type="text/html">
+                                                                                                    <div class="titleBox">
+                                                                                                        <span class="title">{{title}}</span>
+                                                                                                    </div>
+                                                                                                    <div class="description">{{{description}}}</div>
+                                                                                                    <br /><br />
+                                                                                                    &nbsp;
+                                                                                                    </script>
+                                                                                                    <script id="template_reseller_quiz_options" type="text/html">
+                                                                                                        <label class="item">
+                                                                                                            <span class="title"><input type="radio" class="option" name="option" value="{{id}}" /> {{title}}</span>
+                                                                                                        </label>
+                                                                                                        </script>
+                                                                                                        <script id="template_reseller_quiz_options_text" type="text/html">
+                                                                                                            <label class="item">
+                                                                                                                <span class="title"><input disabled="disabled" {{checked}} type="radio" class="option" name="option" value="{{id}}" /> {{title}}</span>
+                                                                                                            </label>
+                                                                                                            </script>
+                                                                                                            <script id="template_reseller_quiz_options_text_old" type="text/html">
+                                                                                                                <label class="item {{className}}">
+                                                                                                                    <span class="title">{{title}}</span>
+                                                                                                                </label>
+                                                                                                                </script>
+                                                                                                            </div>
+
+                                                                                                            <div class="content content2 hide">
+                                                                                                                Thank you for answering.
+                                                                                                            </div>
+                                                                                                            <br /><br /><br />
+                                                                                                            <div class="wall hide">
+                                                                                                                <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                                                <h1>
+                                                                                                                    <span><span class="color">Wall</span> of Fame</span>
+                                                                                                                </h1>
+
+                                                                                                                <div class="content">
+                                                                                                                    <div class="items doctors"></div>
+                                                                                                                    <script id="template_reseller_quiz_doctors" type="text/html">
+                                                                                                                        <div class="item">
+                                                                                                                            <div class="image">
+                                                                                                                                <img src="{{image}}">
+                                                                                                                            </div>
+                                                                                                                            <div class="details">
+                                                                                                                                <div class="titleBox">
+                                                                                                                                    <span class="title">{{full_name}}</span>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="clearfix"></div>
+                                                                                                                        </div>
+                                                                                                                        </script>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                            </div>
+
+                                                                                                            <!-- ######################## Reseller Files ######################## -->
+
+                                                                                                            <div class="holders" id="reseller-files" data-callback="get_reseller_files">
+
+                                                                                                                <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                                                <h1><span class="rname">Reseller</span> <span class="color">Files</span></h1>
+
+                                                                                                                <div class="content">
+
+
+                                                                                                                    <div class="items listings"></div>
+                                                                                                                    <div class="load_more"></div>
+                                                                                                                    <script id="template_reseller_files" type="text/html">
+                                                                                                                        <div class="item">
+                                                                                                                            <div class="image">
+                                                                                                                                <a href="{{document}}" target="_blank"><img src="{{image}}"></a>
+                                                                                                                            </div>
+                                                                                                                            <div class="details">
+                                                                                                                                <div class="titleBox">
+                                                                                                                                    <span class="title">{{title}}</span>
+                                                                                                                                    <span class="date">{{date}}</span>
+                                                                                                                                    <div class="clear"></div>
+                                                                                                                                </div>
+                                                                                                                                <div class="link"><a href="{{document}}" target="_blank">Download</a></div>
+                                                                                                                            </div>
+
+                                                                                                                            <div class="clearfix"></div>
+                                                                                                                        </div>
+                                                                                                                        </script>
+                                                                                                                    </div>
+                                                                                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                                </div>
+
+                                                                                                                <!-- ######################## Settings ######################## -->
+
+                                                                                                                <div class="holders" id="settings" data-callback="get_settings">
+
+                                                                                                                    <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                    <h1>
+                                                                                                                        <span>Settings</span>
+                                                                                                                    </h1>
+
+                                                                                                                    <div class="content">
+
+                                                                                                                        <form action="#" method="post" onsubmit="_update_settings(this);
+                                                                                                                                return false;" >
+                                                                                                                            <div class="errorHolder">
+                                                                                                                                <div class="errors"></div>
+                                                                                                                            </div>
+                                                                                                                            <div class="detailsBox">
+                                                                                                                                <div class="titleBox">
+                                                                                                                                    <span class="title">Notifications</span>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <br />
+                                                                                                                            <div class="items">
+                                                                                                                                <label class="item">
+                                                                                                                                    <span class="title"><input type="radio" class="option" name="notifications" value="1" /> Enable</span>
+                                                                                                                                </label>
+                                                                                                                                <label class="item">
+                                                                                                                                    <span class="title"><input type="radio" class="option" name="notifications" value="0" /> Disable</span>
+                                                                                                                                </label>
+                                                                                                                            </div>
+                                                                                                                            <br />
+                                                                                                                            <fieldset class="submitHolder">
+                                                                                                                                <input class="submit" type="submit" value="Update" />
+                                                                                                                            </fieldset>
+                                                                                                                        </form>
+                                                                                                                    </div>
+                                                                                                                    <div class="banner center" data-banner="bottom_banner" ></div>
+                                                                                                                </div>
+
+                                                                                                                <!-- ######################## Login Form ######################## -->
+
+                                                                                                                <div class="holders" id="login" data-callback="_reset_inputs">
+
+                                                                                                                    <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                    <h1>Log<span class="color">in</span></h1>
+
+                                                                                                                    <div class="content">
+                                                                                                                        <form action="#" method="post" id="login_form" onsubmit="return _login(this);">
+                                                                                                                            <input type="hidden" name="regid" value="test" id="regidCode" />
+                                                                                                                            <input type="hidden" name="source" value="android" />
+                                                                                                                            <script>
+                                                                                                                                function makeid(len)
+                                                                                                                                {
+                                                                                                                                    var text = "";
+                                                                                                                                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                                                                                                                                    for (var i = 0; i < len; i++)
+                                                                                                                                        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                                                                                                                                    return text;
+                                                                                                                                }
+
+                                                                                                                                var randomCode = makeid(10);
+                                                                                                                                $('#regidCode').val(randomCode);
+
+                                                                                                                            </script>
+                                                                                                                            <div class="errorHolder">
+                                                                                                                                <div class="errors"></div>
+                                                                                                                            </div>
+
+                                                                                                                            <fieldset>
+                                                                                                                                <label>E-mail</label>
+                                                                                                                                <input class="input email" type="email" name="email" placeHolder="Username" />
+                                                                                                                            </fieldset>
+                                                                                                                            <fieldset>
+                                                                                                                                <label>Password</label>
+                                                                                                                                <input class="input password" type="password" name="password" placeHolder="Password" />
+                                                                                                                            </fieldset>
+                                                                                                                            <fieldset class="submitHolder">
+                                                                                                                                <input class="submit" type="submit" value="Login" />
+                                                                                                                            </fieldset>
+                                                                                                                        </form>
+                                                                                                                    </div>
+                                                                                                                    <div class="banner center" data-banner="bottom_banner" ></div>
+                                                                                                                </div>
+
+
+                                                                                                                <!-- ######################## **END** ######################## -->
+
+
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div><!-- /scroller-inner -->
+
+
+
+
+                                                                                                    <div id="loader">
+                                                                                                        <img class="img" src="images/ajax-loader.gif" border="0" />
+                                                                                                        <div class="msg"></div>
+                                                                                                    </div>
+                                                                                                </div><!-- /scroller -->
+
+                                                                                            </div><!-- /pusher -->
+                                                                                        </div><!-- /container -->
+                                                                                        <script src="js/classie.js"></script>
+                                                                                        <script src="js/mlpushmenu.js"></script>
+                                                                                        <script>
+                                                                                                                                function mlPushMenuAction() {
+                                                                                                                                    _menu = new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'), {
+                                                                                                                                        open: function () {
+                                                                                                                                            //		$("#scroll").getNiceScroll().resize();
+                                                                                                                                            //		$("#scroll").getNiceScroll().hide();
+
+                                                                                                                                            var menuHeight = $(window).height() - $('#app_name').outerHeight() - 10;
+
+                                                                                                                                            menuList = $("#scroll").data('jsp');
+                                                                                                                                            $("#scroll").css({'height': menuHeight + 'px'});
+                                                                                                                                            $("#scroll").jScrollPane({
+                                                                                                                                                height: menuHeight,
+                                                                                                                                                mouseWheelSpeed: 50
+                                                                                                                                            });
+
+                                                                                                                                            menuList.reinitialise();
+
+                                                                                                                                        }
+                                                                                                                                    });
+                                                                                                                                }
+                                                                                                                                mlPushMenuAction();
+                                                                                        </script>
+                                                                                    </body>
+                                                                                </html>

@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Prevision</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="author" content="Codrops" />
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+<<<<<<< Updated upstream
+
+        <link rel="manifest" href="manifest.json">
+        
+=======
+>>>>>>> Stashed changes
+        <link rel="shortcut icon" href="../favicon.ico">
+        <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
+        <link rel="stylesheet" type="text/css" href="fonts/myriadpro/stylesheet.css" />
+        <link rel="stylesheet" type="text/css" href="fonts/league_gothic/stylesheet.css" />
+        <link rel="stylesheet" type="text/css" href="css/component.css" />
+        <link rel="stylesheet" type="text/css" href="js/jscrollpane/jquery.jscrollpane.css" />
+        <link rel="stylesheet" type="text/css" href="css/flexslider.css" />
+
+        
+
+        <script src="js/jquery-1.10.2.min.js"></script>
+        <script src="js/jquery.cookie.js"></script>
+        <script src="js/ICanHaz.min.js"></script>
+        <script src="js/infiniScroll.js"></script>
+        <script src="js/jscrollpane/jquery.mousewheel.js"></script>
+        <script src="js/jscrollpane/mwheelIntent.js"></script>
+        <script src="js/jscrollpane/jquery.jscrollpane.min.js"></script>
+        <script src="js/jquery.flexslider-min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <script src="js/scripts.base.js"></script>
+        <script src="js/scripts.holders.js"></script>
+        
+        <script>
+            //var $api = 'http://localhost:8888/prevision/education/api.php';
+            var $api = 'http://www.previsionpro.com/education/api.php';
+            var $loginKey = false;
+            var $account = {};
+            var $school = {};
+            var $schools = {};
+            var $students = {};
+            var $categories_news = {};
+            var $categories_documents = {};
+            var $categories_gallery = {};
+            var _menu = false;
+            var _cookie_login = false;
+                        
+            if ($.cookie("loginKey")) {
+                _cookie_login = true;
+                _api('get', 'is_login', {key: $.cookie("loginKey")}, function (response) {
+                    _cookie_login = false;
+                    if (!response.error) {
+                        _do_login(response);
+                    }
+                });
+            }
+
+            $('<img />').attr('src', 'images/bg-spla.png').load(function(){
+                $('<img />').attr('src', 'images/logo-spla.png').load(function(){
+                    $(document).ready(function(){
+                        setTimeout(function(){
+                            var interval = setInterval(function(){
+                                if (!_cookie_login) {
+                                    clearInterval(interval);
+                                    $('#spla').fadeOut();
+                                }
+                            }, 100);
+                        }, 2000);
+                    });
+                });
+            });
+            
+        </script>
+        
+        <!-- ionic/angularjs js -->
+        <script src="lib/ionic/js/ionic.bundle.js"></script>
+        <script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.min.js"></script>
+
+        <!-- your app's js -->
+        <script src="js/app.js"></script>
+        
+        <script src="js/modernizr.custom.js"></script>
+    </head>
+    <body ng-app="starter">
+        <div id="spla" style="background: #336699;">
+            <div id="spla-logo"></div>
+            <div id="spla-dots"></div>
+            <img id="spla-img" src="images/bg-spla.png" />
+        </div>
+        <div class="container">
+            <!-- Push Wrapper -->
+            <div class="mp-pusher" id="mp-pusher">
+                <div style="display: none;">
+                    <ul>
+                        <li class="isLoggedin" id="education_news_cat"><a class="fa fa-arrow-right" href="#education-news"></a></li>
+                        <li class="isLoggedin" id="school_news_cat"><a class="fa fa-arrow-right" href="#school-news"></a></li>
+                        <li class="isLoggedin" id="school_documents_cat"><a class="fa fa-arrow-right" href="#school-files"></a></li>
+                        <li class="isLoggedin" id="school_gallery_cat"><a class="fa fa-arrow-right" href="#school-gallery"></a></li>
+                    </ul>
+                </div>
+                <!-- mp-menu -->
+                <nav id="mp-menu" class="mp-menu">
+                    <div class="mp-level">
+                        <h2 id="app_name">Sections</h2>
+                        <div id="scroll">
+                            <ul>
+                                <!-- 							<li><span class="fa fa-search"><input class="menu-search" type="text" name="search" placeholder="Search" /></span></li> -->
+                                <li><a class="fa fa-home" href="#home">Home</a></li>
+                                <li class="isLoggedin"><a class="fa fa-calendar" href="#agenda-students"><span class="vnav-counter" id="agenda_counter"></span>Agenda</a></li>
+                                <li><a class="fa fa-font" href="#about-us">About Prevision</a></li>
+                                <li id="menu_services"><a class="fa fa-edit" href="#services">Services</a></li>
+                                <li><a class="fa fa-rss" href="#site-news">Prevision News</a></li>
+                                <li class="isLoggedin" id="menu_education_news"><a class="fa fa-rss" href="#" data-menu="menu_education_news_menu">Education News</a></li>
+                                <li id="menu_education_news_menu" class="hide">
+                                    <ul>
+
+                                    </ul>
+                                </li>
+                                <li class="isLoggedin"><a class="fa fa-info-circle" href="#about-school">About <span class="rname">School</span></a></li>
+                                <li class="isLoggedin" id="menu_school_news"><a class="fa fa-th" href="#school-news"><span class="vnav-counter"></span><span class="rname">School</span> News</a></li>
+                                <li id="menu_school_news_menu" class="hide">
+                                    <ul>
+
+                                    </ul>
+                                </li>
+                                <li class="isLoggedin" id="menu_school_documents"><a class="fa fa-files-o" href="#" data-menu="menu_school_documents_menu"><span class="vnav-counter" id="documents_counter"></span><span class="rname">School</span> Files</a></li>
+                                <li id="menu_school_documents_menu" class="hide">
+                                    <ul>
+
+                                    </ul>
+                                </li>
+                                <li class="isLoggedin"><a class="fa fa-inbox" href="#school-contact"><span class="vnav-counter">15</span>Contact <span class="rname">School</span></a></li>
+                                <!--							<li class="isLoggedin"><a class="fa fa-upload" href="#school-upload">Add Patient</a></li> -->
+
+                                <li class="isLoggedin"><a class="fa fa-bar-chart-o" href="#school-polls"><span class="rname">School</span> Polls</a></li>
+                                <li class="isLoggedin"><a class="fa fa-flag" href="#school-quiz"><span class="rname">School</span> Quiz</a></li>
+
+
+                                <li class="isLoggedin" id="menu_school_gallery"><a class="fa fa-picture-o" href="#" data-menu="menu_school_gallery_menu"><span class="vnav-counter" id="gallery_counter"></span><span class="rname">School</span> Gallery</a></li>
+                                <li id="menu_school_gallery_menu" class="hide">
+                                    <ul>
+
+                                    </ul>
+                                </li>
+                                <li class="isLoggedin"><a class="fa fa-youtube-play" href="#school-videos"><span class="vnav-counter" id="videos_counter"></span><span class="rname">School</span> Videos</a></li>
+
+                                <li class="isNotLoggedin"><a class="fa fa-key" href="#login">Login</a></li>
+                                <li class="isLoggedin"><a class="fa fa-sign-out" href="#logout">LogOut</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!-- /mp-menu -->
+
+                <div class="scroller"><!-- this is for emulating position fixed of the nav -->
+                    <div class="scroller-inner">
+                        <!-- Top Navigation -->
+                        <div class="content_box clearfix">
+                            <div id="header" class="clearfix">
+                                <div id="inner-header">
+                                    <a href="#" id="trigger" class="menu-icon menu-trigger fa fa-tasks">&nbsp;</a>
+
+                                    <span id="Notifications" class="isLoggedin notification-list" tabindex="1">
+                                        <span class="menu-icon fa fa-bell notification-icon"><span class="counter">15</span></span>
+                                        <ul class="dropdown">
+                                            <li>Prevision added <a href="#site-news-details" data-id="30">new story</a></li>
+                                            <li><span class="rname">School</span> added <a href="#school-news-details" data-id="9">new story</a></li>
+                                            <li><a href="#school-contact-details" data-id="1">You have a new reply from <span class="rname">School</span>.</a></li>
+                                        </ul>
+                                    </span>
+                                    <a href="#settings" class="isLoggedin menu-icon fa fa-gear">&nbsp;</a>
+
+                                    <span class="isLoggedin actionBarLineHeight" tabindex="2">
+                                        <a href="#change-school"><span class="rname">School</span></a>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div id="holders">
+                                <div class="holders" id="home" data-callback="get_home_site_news">
+
+                                    <div class="content">
+                                        <div id="sliders" >
+                                            <div class="flexslider-container">
+                                                <div class="flexslider">
+                                                    <ul class="slides">
+                                                        <li><a href="#services"><img src="slides/1.jpg" /></a></li>
+                                                        <li><a href="#services"><img src="slides/2.jpg" /></a></li>
+                                                        <li><a href="#services"><img src="slides/3.jpg" /></a></li>
+                                                        <li><a href="#services"><img src="slides/4.jpg" /></a></li>
+                                                        <li><a href="#services"><img src="slides/5.jpg" /></a></li>
+                                                        <li><a href="#services"><img src="slides/6.jpg" /></a></li>
+                                                        <li><a href="#services"><img src="slides/7.jpg" /></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="textBox">
+                                            <div class="title">About Us</div>
+                                            <div class="text">Prevision is a leading online education application that focuses on enriching and improving the education knowledge and awareness of the students and parents. We are a society of professional experts known for our practical expertise, reliability and trustworthiness.</div>
+
+                                            <div class="read-more">
+                                                <a href="#about-us">Read More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="banner center" data-banner="home_banner" ></div>
+
+                                    <h1>LATEST <span class="color">NEWS</span></h1>
+
+                                    <div class="content">
+                                        <div class="news_list listings items"></div>
+                                    </div>
+                                    <script id="template_home_site_news" type="text/html">
+                                        <div class="item">
+                                            <div class="image">
+                                                <a href="#site-news-details" data-id="{{id}}"><img src="{{image}}"></a>
+                                            </div>
+                                            <div class="details">
+                                                <div class="titleBox">
+                                                    <span class="title"><a href="#site-news-details" data-id="{{id}}">{{title}}</a></span>
+                                                </div>
+                                                <div class="description">{{description}}</div>
+                                                <div class="link">{{link}}</div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        </script>
+                                    </div>
+                                    <div class="holders" id="about-us">
+                                        <div class="banner center" data-banner="top_banner" ></div>
+
+                                        <div class="content">
+
+                                            <h2>Who we are</h2>
+                                            <p>Prevision is a leading online education application that focuses on enriching and improving the education knowledge and awareness of the students and the parents. We are a society of professional experts known for our practical expertise, reliability and trustworthiness.</p>
+
+                                            <h2>Vision</h2>
+                                            <p></p>
+
+                                            <h2>Mission</h2>
+                                            <p></p>
+
+                                            <h2>Values</h2>
+                                            <p></p>
+
+                                            <h2>Approach</h2>
+                                            <p></p>
+
+                                            <h2>Risk Management</h2>
+                                            <p></p>
+
+                                        </div>
+                                        <div class="banner center" data-banner="bottom_banner" ></div>
+                                    </div>
+                                    <div class="holders" id="services">
+                                        <!-- 									<h1>Services</h1> -->
+
+                                        <div class="banner center" data-banner="top_banner" ></div>
+                                        <div class="content">
+                                            <h2>Sectors we serve</h2>
+                                            <ul class="ul">
+                                                <li><b>---</b>
+                                                    <br>---</li>
+
+                                                <li><b>---</b>
+                                                    <br>---</li>
+                                            </ul>
+
+
+
+                                            <h2>Prevision practices</h2>
+                                            <ul class="ul">
+                                                <li>--</li>
+                                                <li>--</li>
+                                                <li>--</li>
+                                                <li>--</li>
+                                                <li>--
+                                                    <ul>
+                                                        <li>--</li>
+                                                        <li>--</li>
+                                                    </ul>
+                                                </li>
+                                                <li>--
+                                                    <ul>
+                                                        <li>--</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                    </div>
+
+                                    <!-- ######################## Site News ######################## -->
+
+                                    <div class="holders" id="site-news" data-callback="get_site_news">
+
+                                        <div class="banner center" data-banner="top_banner" ></div>
+                                        <h1>Prevision <span class="color">News</span></h1>
+
+                                        <div class="content">
+
+                                            <div class="items listings listings_banners"></div>
+                                            <div class="load_more"></div>
+                                            <script id="template_site_news" type="text/html">
+                                                <div class="item">
+                                                    <div class="image">
+                                                        <a href="#site-news-details" data-id="{{id}}"><img src="{{image}}"></a>
+                                                    </div>
+                                                    <div class="details">
+                                                        <div class="titleBox">
+                                                            <span class="title"><a href="#site-news-details" data-id="{{id}}">{{title}}</a></span>
+                                                            <span class="date">{{date}}</span>
+                                                        </div>
+                                                        <div class="description">{{description}}</div>
+                                                        <div class="link">{{link}}</div>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                </script>
+                                            </div>
+                                            <div class="banner center" data-banner="bottom_banner" ></div>
+                                        </div>
+                                        <div class="holders" id="site-news-details" data-callback="get_site_news_details">
+
+                                            <div class="banner center" data-banner="top_banner" ></div>
+                                            <h1>
+                                                <a href="#site-news" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                Prevision <span class="color">News</span>
+                                            </h1>
+
+                                            <div class="content">
+
+                                                <div class="detailsBox"></div>
+                                                <script id="template_site_news_details" type="text/html">
+                                                    <div class="imageTitleBox">
+                                                        <div class="image">
+                                                            <img src="{{image}}" class="maxWidth">
+                                                        </div>
+                                                        <div class="titleBox">
+                                                            <span class="title">{{title}}</span>
+                                                            <span class="date">{{date}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="description">{{description}}</div>
+                                                    </script>
+                                                </div>
+                                                <div class="banner center" data-banner="bottom_banner" ></div>
+                                            </div>
+
+                                            <!-- ######################## Education News ######################## -->
+
+                                            <div class="holders" id="education-news" data-callback="get_education_news">
+
+                                                <div class="banner center" data-banner="top_banner" ></div>
+                                                <h1>Education <span class="color">News</span></h1>
+
+                                                <div class="content">
+                                                    <div class="items listings listings_banners"></div>
+                                                    <div class="load_more"></div>
+                                                    <script id="template_education_news" type="text/html">
+                                                        <div class="item">
+                                                            <div class="image">
+                                                                <a href="#education-news-details" data-id="{{id}}"><img src="{{image}}"></a>
+                                                            </div>
+                                                            <div class="details">
+                                                                <div class="titleBox">
+                                                                    <span class="title"><a href="#education-news-details" data-id="{{id}}">{{title}}</a></span>
+                                                                    <span class="date">{{date}}</span>
+                                                                    <div class="clear"></div>
+                                                                </div>
+                                                                <div class="description">{{description}}</div>
+                                                                <div class="link">{{link}}</div>
+                                                            </div>
+
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        </script>
+                                                    </div>
+                                                    <div class="banner center" data-banner="bottom_banner" ></div>
+                                                </div>
+                                                <div class="holders" id="education-news-details" data-callback="get_education_news_details">
+
+                                                    <div class="banner center" data-banner="top_banner" ></div>
+                                                    <h1>
+                                                        <a href="#education-news" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                        Education <span class="color">News</span>
+                                                    </h1>
+
+                                                    <div class="content">
+                                                        <div class="detailsBox"></div>
+                                                        <script id="template_education_news_details" type="text/html">
+
+                                                            <div class="imageTitleBox">
+                                                                <div class="image">
+                                                                    <img src="{{image}}" class="maxWidth">
+                                                                </div>
+                                                                <div class="titleBox">
+                                                                    <span class="title">{{title}}</span>
+                                                                    <span class="date">{{date}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="description">{{description}}</div>
+                                                            </script>
+                                                        </div>
+                                                        <div class="banner center" data-banner="bottom_banner" ></div>
+                                                    </div>
+
+
+                                                    <!-- ######################## School News ######################## -->
+
+                                                    <div class="holders" id="school-news" data-callback="get_school_news">
+
+                                                        <div class="banner center" data-banner="top_banner_private" ></div>
+                                                        <h1><span class="rname">School</span> <span class="color">News</span></h1>
+
+                                                        <div class="content">
+                                                            <div class="items listings listings_banners_private"></div>
+                                                            <div class="load_more"></div>
+                                                            <script id="template_school_news" type="text/html">
+                                                                <div class="item">
+                                                                    <div class="image">
+                                                                        <a href="#school-news-details" data-id="{{id}}"><img src="{{image}}"></a>
+                                                                    </div>
+                                                                    <div class="details">
+                                                                        <div class="titleBox">
+                                                                            <span class="title"><a href="#school-news-details" data-id="{{id}}">{{title}}</a></span>
+                                                                            <span class="date">{{date}}</span>
+                                                                            <div class="clear"></div>
+                                                                        </div>
+                                                                        <div class="description">{{description}}</div>
+                                                                        <div class="link">{{link}}</div>
+                                                                    </div>
+
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                                </script>
+                                                            </div>
+                                                            <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                        </div>
+                                                        <div class="holders" id="school-news-details" data-callback="get_school_news_details">
+
+                                                            <div class="banner center" data-banner="top_banner_private" ></div>
+                                                            <h1>
+                                                                <a href="#school-news" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                                <span class="rname">School</span> <span class="color">News</span>
+                                                            </h1>
+
+                                                            <div class="content">
+                                                                <div class="detailsBox"></div>
+                                                                <script id="template_school_news_details" type="text/html">
+
+                                                                    <div class="imageTitleBox">
+                                                                        <div class="image">
+                                                                            <img src="{{image}}" class="maxWidth">
+                                                                        </div>
+                                                                        <div class="titleBox">
+                                                                            <span class="title">{{title}}</span>
+                                                                            <span class="date">{{date}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="description">{{description}}</div>
+                                                                    </script>
+                                                                </div>
+                                                                <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                            </div>
+
+                                                            <!-- ######################## School Gallery ######################## -->
+
+                                                            <div class="holders" id="school-gallery" data-callback="get_school_gallery">
+
+                                                                <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                <h1><span class="rname">School</span> <span class="color">Gallery</span></h1>
+
+                                                                <div class="content">
+                                                                    <div class="items listings listings_banners_private"></div>
+                                                                    <div class="load_more"></div>
+                                                                    <script id="template_school_gallery" type="text/html">
+                                                                        <div class="item">
+                                                                            <div class="image">
+                                                                                <img src="{{image}}">
+                                                                            </div>
+                                                                            <div class="details">
+                                                                                <div class="titleBox">
+                                                                                    <span class="title"><a href="#school-gallery-details" data-id="{{id}}">{{title}}</a></span>
+                                                                                    <span class="date">{{date}}</span>
+                                                                                    <div class="clear"></div>
+                                                                                </div>
+                                                                                <div class="description">{{description}}</div>
+                                                                                <div class="link">{{link}}</div>
+                                                                            </div>
+
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+                                                                        </script>
+                                                                    </div>
+                                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                </div>
+                                                                <div class="holders" id="school-gallery-details" data-callback="get_school_gallery_details">
+
+                                                                    <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                    <h1>
+                                                                        <a href="#school-gallery" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                                        <span class="rname">School</span> <span class="color">Gallery</span>
+                                                                    </h1>
+
+                                                                    <div class="content">
+                                                                        <div class="detailsBox"></div>
+                                                                        <script id="template_school_gallery_details" type="text/html">
+
+                                                                            <div class="imageTitleBox">
+                                                                                <div class="image">
+                                                                                    <img src="{{image}}" class="maxWidth">
+                                                                                </div>
+                                                                                <div class="titleBox">
+                                                                                    <span class="title">{{title}}</span>
+                                                                                    <span class="date">{{date}}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="description">{{description}}</div>
+                                                                            </script>
+                                                                        </div>
+                                                                        <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                    </div>
+
+                                                                    <!-- ######################## School Videos ######################## -->
+
+                                                                    <div class="holders" id="school-videos" data-callback="get_school_videos">
+
+                                                                        <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                        <h1><span class="rname">School</span> <span class="color">Videos</span></h1>
+
+                                                                        <div class="content">
+                                                                            <div class="items listings listings_banners_private"></div>
+                                                                            <div class="load_more"></div>
+                                                                            <script id="template_school_videos" type="text/html">
+                                                                                <div class="item">
+                                                                                    <div class="image">
+                                                                                        <img src="{{image}}">
+                                                                                    </div>
+                                                                                    <div class="details">
+                                                                                        <div class="titleBox">
+                                                                                            <span class="title"><a href="#school-videos-details" data-id="{{id}}">{{title}}</a></span>
+                                                                                            <span class="date">{{date}}</span>
+                                                                                            <div class="clear"></div>
+                                                                                        </div>
+                                                                                        <div class="description">{{description}}</div>
+                                                                                        <div class="link">{{link}}</div>
+                                                                                    </div>
+
+                                                                                    <div class="clearfix"></div>
+                                                                                </div>
+                                                                                </script>
+                                                                            </div>
+                                                                            <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                        </div>
+                                                                        <div class="holders" id="school-videos-details" data-callback="get_school_videos_details">
+
+                                                                            <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                            <h1>
+                                                                                <a href="#school-videos" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                                                <span class="rname">School</span> <span class="color">videos</span>
+                                                                            </h1>
+
+                                                                            <div class="content">
+                                                                                <div class="detailsBox"></div>
+                                                                                <script id="template_school_videos_details" type="text/html">
+
+                                                                                    <div class="imageTitleBox">
+                                                                                        <div class="video">
+                                                                                            <iframe width="560" height="315" src="//www.youtube.com/embed/{{youtube_id}}}?rel=0" frameborder="0" allowfullscreen></iframe>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="description">{{description}}</div>
+                                                                                    </script>
+                                                                                    <script id="template_school_videos_details2" type="text/html">
+                                                                                        <div class="imageTitleBox">
+                                                                                            <div class="video">
+                                                                                                <object width="560" height="315">
+                                                                                                    <param name="movie" value="{{{video}}}&hl=en_US&amp;version=3&amp;rel=0"></param>
+                                                                                                    <param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param>
+                                                                                                    <embed src="{{{video}}}&hl=en_US&amp;version=3&amp;rel=0" type="application/x-shockwave-flash" width="560" height="315" allowscriptaccess="always" allowfullscreen="true"></embed>
+                                                                                                </object>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="description">{{description}}</div>
+                                                                                        </script>
+                                                                                    </div>
+                                                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                </div>
+
+                                                                                <!-- ######################## School Contact ######################## -->
+
+                                                                                <div class="holders" id="school-contact" data-callback="get_school_contact">
+
+                                                                                    <div class="banner center" data-banner="top_banner_private" ></div>
+
+                                                                                    <h1>
+                                                                                        <a href="#school-contact-add" class="icon fa fa-pencil-square">&nbsp;</a>
+                                                                                        <span>Contact <span class="rname color">School</span></span>
+                                                                                    </h1>
+
+                                                                                    <div class="content">
+
+                                                                                        <div class="items listings"></div>
+                                                                                        <div class="load_more"></div>
+                                                                                        <script id="template_school_contact" type="text/html">
+                                                                                            <div class="item">
+                                                                                                <div class="details">
+                                                                                                    <div class="titleBox">
+                                                                                                        <span class="title"><a href="#school-contact-details" data-id="{{id}}">{{title}}</a></span>
+                                                                                                        <span class="date">{{date}}</span>
+                                                                                                    </div>
+                                                                                                    <div class="description">{{description}}</div>
+                                                                                                    <div class="info"><b>Last Update:</b> {{{last_update}}}</div>
+                                                                                                </div>
+
+                                                                                                <div class="clearfix"></div>
+                                                                                            </div>
+                                                                                            </script>
+                                                                                        </div>
+                                                                                        <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                    </div>
+
+                                                                                    <div class="holders" id="school-contact-details" data-callback="get_school_contact_details">
+
+                                                                                        <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                        <h1>
+                                                                                            <a href="#school-contact" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                                                            <a href="#school-contact-add" class="icon menu-back fa fa-pencil-square">&nbsp;</a>
+                                                                                            <span>Contact <span class="rname color">School</span></span>
+                                                                                        </h1>
+
+                                                                                        <div class="content">
+
+                                                                                            <div class="detailsBox"></div>
+                                                                                            <div class="items listings"></div>
+                                                                                            <div class="load_more"></div>
+
+                                                                                            <div class="reply hide">
+                                                                                                <form action="#" method="post" id="question_reply_form" onsubmit="return _school_contact_reply(this);">
+                                                                                                    <div class="errorHolder">
+                                                                                                        <div class="errors"></div>
+                                                                                                    </div>
+
+                                                                                                    <fieldset>
+                                                                                                        <label>Reply</label>
+                                                                                                        <textarea name="question_reply" class="textarea question_reply" ></textarea>
+                                                                                                    </fieldset>
+                                                                                                    <fieldset class="submitHolder">
+                                                                                                        <input class="submit" type="submit" value="Send Reply" />
+                                                                                                    </fieldset>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                            <script id="template_school_contact_detailsBox" type="text/html">
+                                                                                                <div class="titleBox">
+                                                                                                    <span class="title">{{title}}</span>
+                                                                                                    <span class="date">{{date}}</span>
+                                                                                                </div>
+                                                                                                <div class="image">
+                                                                                                    <img src="{{image}}" class="maxWidth">
+                                                                                                </div>
+                                                                                                <div class="description">{{description}}</div>
+                                                                                                <br /><br /><br />
+                                                                                                <h2>Replies</h2>
+                                                                                                </script>
+                                                                                                <script id="template_school_contact_replies" type="text/html">
+                                                                                                    <div class="item">
+                                                                                                        <div class="details">
+                                                                                                            <div class="titleBox">
+                                                                                                                <span class="title"><b>From:</b> {{reply_from}} @{{time}} {{date}}</span>
+                                                                                                            </div>
+                                                                                                            <div class="description">{{description}}</div>
+                                                                                                        </div>
+
+                                                                                                        <div class="clearfix"></div>
+                                                                                                    </div>
+                                                                                                    </script>
+                                                                                                </div>
+                                                                                                <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                            </div>
+
+                                                                                            <div class="holders" id="school-contact-add">
+
+                                                                                                <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                                <h1>
+                                                                                                    <a href="#school-contact" class="icon menu-back fa fa-reply">&nbsp;</a>
+                                                                                                    <span>Contact <span class="rname color">School</span></span>
+                                                                                                </h1>
+
+                                                                                                <div class="content">
+
+                                                                                                    <div class="reply">
+                                                                                                        <form action="#" method="post" id="question_add_form" onsubmit="return _school_contact_add(this);">
+                                                                                                            <div class="errorHolder">
+                                                                                                                <div class="errors"></div>
+                                                                                                            </div>
+
+                                                                                                            <fieldset>
+                                                                                                                <label>Contact Name</label>
+                                                                                                                <input class="input contact_name" type="text" name="contact_name" />
+                                                                                                            </fieldset>
+                                                                                                            <fieldset>
+                                                                                                                <label>Contact Email</label>
+                                                                                                                <input class="input contact_email" type="text" name="contact_email" />
+                                                                                                            </fieldset>
+                                                                                                            <fieldset>
+                                                                                                                <label>Contact Phone</label>
+                                                                                                                <input class="input contact_phone" type="text" name="contact_phone" />
+                                                                                                            </fieldset>
+                                                                                                            <fieldset>
+                                                                                                                <label>Contact Address</label>
+                                                                                                                <input class="input contact_address" type="text" name="contact_address" />
+                                                                                                            </fieldset>
+
+
+                                                                                                            <fieldset>
+                                                                                                                <label>Title</label>
+                                                                                                                <input class="input question_title" type="text" name="question_title" />
+                                                                                                            </fieldset>
+                                                                                                            <fieldset>
+                                                                                                                <label>Details</label>
+                                                                                                                <textarea name="question_description" class="textarea question_description" ></textarea>
+                                                                                                            </fieldset>
+                                                                                                            <fieldset class="submitHolder">
+                                                                                                                <input class="submit" type="submit" value="Send Question" />
+                                                                                                            </fieldset>
+                                                                                                        </form>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                            </div>
+
+                                                                                            <!-- ######################## School Polls ######################## -->
+
+                                                                                            <div class="holders" id="school-polls" data-callback="get_school_polls">
+
+                                                                                                <div class="banner center" data-banner="top_banner_private" ></div>
+
+                                                                                                <h1>
+                                                                                                    <span><span class="rname color">School</span> Polls</span>
+                                                                                                </h1>
+
+                                                                                                <div class="content">
+
+                                                                                                    <div class="items listings"></div>
+                                                                                                    <div class="load_more"></div>
+                                                                                                    <script id="template_school_poll" type="text/html">
+                                                                                                        <div class="item">
+                                                                                                            <div class="details">
+                                                                                                                <div class="titleBox">
+                                                                                                                    <span class="title"><a href="#school-poll" data-id="{{id}}">{{title}}</a></span>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="clearfix"></div>
+                                                                                                        </div>
+                                                                                                        </script>
+                                                                                                    </div>
+                                                                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                </div>
+
+                                                                                                <div class="holders" id="school-poll" data-callback="get_school_poll">
+
+                                                                                                    <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                                    <h1>
+                                                                                                        <span><span class="rname color">School</span> Polls</span>
+                                                                                                    </h1>
+
+                                                                                                    <div class="content content1">
+
+                                                                                                        <div class="detailsBox"></div>
+                                                                                                        <form action="#" method="post" onsubmit="_poll_reply(this);
+                                                                                                                return false;" >
+                                                                                                            <div class="errorHolder">
+                                                                                                                <div class="errors"></div>
+                                                                                                            </div>
+                                                                                                            <div class="items listings"></div>
+                                                                                                            <br />
+                                                                                                            <fieldset class="submitHolder">
+                                                                                                                <input class="submit" type="submit" value="Send" />
+                                                                                                            </fieldset>
+                                                                                                        </form>
+
+                                                                                                        <script id="template_school_poll_detailsBox" type="text/html">
+                                                                                                            <div class="titleBox">
+                                                                                                                <span class="title">{{title}}</span>
+                                                                                                            </div>
+                                                                                                            <div class="description">{{description}}</div>
+                                                                                                            <br /><br />
+                                                                                                            &nbsp;
+                                                                                                            </script>
+                                                                                                            <script id="template_school_poll_options" type="text/html">
+                                                                                                                <label class="item">
+                                                                                                                    <span class="title"><input type="radio" class="option" name="option" value="{{id}}" /> {{title}}</span>
+                                                                                                                </label>
+                                                                                                                </script>
+                                                                                                                <script id="template_school_poll_options_text" type="text/html">
+                                                                                                                    <label class="item">
+                                                                                                                        <span class="title"><input disabled="disabled" {{checked}} type="radio" class="option" name="option" value="{{id}}" /> {{title}}</span>
+                                                                                                                    </label>
+                                                                                                                    </script>
+                                                                                                                    <script id="template_school_poll_options_text_old" type="text/html">
+                                                                                                                        <label class="item {{className}}">
+                                                                                                                            <span class="title">{{title}}</span>
+                                                                                                                        </label>
+                                                                                                                        </script>
+                                                                                                                    </div>
+
+                                                                                                                    <div class="content content2 hide">
+                                                                                                                        Thank you for answering.
+                                                                                                                    </div>
+                                                                                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                                </div>
+
+                                                                                                                <!-- ######################## School Quiz ######################## -->
+
+                                                                                                                <div class="holders" id="school-quiz" data-callback="get_school_quiz">
+
+                                                                                                                    <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                    <h1>
+                                                                                                                        <span><span class="rname color">School</span> Quiz</span>
+                                                                                                                    </h1>
+
+                                                                                                                    <div class="content content1">
+
+                                                                                                                        <div class="detailsBox"></div>
+                                                                                                                        <form action="#" method="post" onsubmit="_quiz_reply(this); return false;" >
+                                                                                                                            <div class="errorHolder">
+                                                                                                                                <div class="errors"></div>
+                                                                                                                            </div>
+                                                                                                                            <div class="items listings"></div>
+                                                                                                                            <br />
+                                                                                                                            <fieldset class="submitHolder">
+                                                                                                                                <input class="submit" type="submit" value="Send" />
+                                                                                                                            </fieldset>
+                                                                                                                        </form>
+
+                                                                                                                        <script id="template_school_quiz_empty" type="text/html">
+                                                                                                                            <div class="titleBox">
+                                                                                                                                <span class="title">No Competition available for this month.</span>
+                                                                                                                            </div>
+                                                                                                                            </script>
+                                                                                                                            <script id="template_school_quiz_detailsBox" type="text/html">
+                                                                                                                                <div class="titleBox">
+                                                                                                                                    <span class="title">{{title}}</span>
+                                                                                                                                </div>
+                                                                                                                                <div class="description">{{description}}</div>
+                                                                                                                                <br /><br />
+                                                                                                                                &nbsp;
+                                                                                                                                </script>
+                                                                                                                                <script id="template_school_quiz_options" type="text/html">
+                                                                                                                                    <label class="item">
+                                                                                                                                        <span class="title"><input type="radio" class="option" name="option" value="{{id}}" /> {{title}}</span>
+                                                                                                                                    </label>
+                                                                                                                                    </script>
+                                                                                                                                    <script id="template_school_quiz_options_text" type="text/html">
+                                                                                                                                        <label class="item">
+                                                                                                                                            <span class="title"><input disabled="disabled" {{checked}} type="radio" class="option" name="option" value="{{id}}" /> {{title}}</span>
+                                                                                                                                        </label>
+                                                                                                                                        </script>
+                                                                                                                                        <script id="template_school_quiz_options_text_old" type="text/html">
+                                                                                                                                            <label class="item {{className}}">
+                                                                                                                                                <span class="title">{{title}}</span>
+                                                                                                                                            </label>
+                                                                                                                                            </script>
+                                                                                                                                        </div>
+
+                                                                                                                                        <div class="content content2 hide">
+                                                                                                                                            Thank you for answering.
+                                                                                                                                        </div>
+                                                                                                                                        <br /><br /><br />
+                                                                                                                                        <div class="wall hide">
+                                                                                                                                            <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                                            <h1>
+                                                                                                                                                <span><span class="color">Wall</span> of Fame</span>
+                                                                                                                                            </h1>
+
+                                                                                                                                            <div class="content">
+                                                                                                                                                <div class="items students"></div>
+                                                                                                                                                <script id="template_school_quiz_students" type="text/html">
+                                                                                                                                                    <div class="item">
+                                                                                                                                                        <div class="image">
+                                                                                                                                                            <img src="{{image}}">
+                                                                                                                                                        </div>
+                                                                                                                                                        <div class="details">
+                                                                                                                                                            <div class="titleBox">
+                                                                                                                                                                <span class="title">{{full_name}}</span>
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
+                                                                                                                                                        <div class="clearfix"></div>
+                                                                                                                                                    </div>
+                                                                                                                                                    </script>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                            <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                                                        </div>
+
+                                                                                                                                        <!-- ######################## School Files ######################## -->
+
+                                                                                                                                        <div class="holders" id="school-files" data-callback="get_school_files">
+
+                                                                                                                                            <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                                                                            <h1><span class="rname">School</span> <span class="color">Files</span></h1>
+
+                                                                                                                                            <div class="content">
+
+
+                                                                                                                                                <div class="items listings"></div>
+                                                                                                                                                <div class="load_more"></div>
+                                                                                                                                                <script id="template_school_files" type="text/html">
+                                                                                                                                                    <div class="item">
+                                                                                                                                                        <div class="image">
+                                                                                                                                                            <a href="{{document}}" target="_blank"><img src="{{image}}"></a>
+                                                                                                                                                        </div>
+                                                                                                                                                        <div class="details">
+                                                                                                                                                            <div class="titleBox">
+                                                                                                                                                                <span class="title">{{title}}</span>
+                                                                                                                                                                <span class="date">{{date}}</span>
+                                                                                                                                                                <div class="clear"></div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="link"><a href="{{document}}" target="_blank">Download</a></div>
+                                                                                                                                                        </div>
+
+                                                                                                                                                        <div class="clearfix"></div>
+                                                                                                                                                    </div>
+                                                                                                                                                    </script>
+                                                                                                                                                </div>
+                                                                                                                                                <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                                                            </div>
+
+                                                                                                                                            <!-- ######################## Settings ######################## -->
+
+                                                                                                                                            <div class="holders" id="settings" data-callback="get_settings">
+
+                                                                                                                                                <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                                                <h1>
+                                                                                                                                                    <span>Settings</span>
+                                                                                                                                                </h1>
+
+                                                                                                                                                <div class="content">
+
+                                                                                                                                                    <form action="#" method="post" onsubmit="_update_settings(this);
+                                                                                                                                                            return false;" >
+                                                                                                                                                        <div class="errorHolder">
+                                                                                                                                                            <div class="errors"></div>
+                                                                                                                                                        </div>
+                                                                                                                                                        <div class="detailsBox">
+                                                                                                                                                            <div class="titleBox">
+                                                                                                                                                                <span class="title">Notifications</span>
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
+                                                                                                                                                        <br />
+                                                                                                                                                        <div class="items">
+                                                                                                                                                            <label class="item">
+                                                                                                                                                                <span class="title"><input type="radio" class="option" name="notifications" value="1" /> Enable</span>
+                                                                                                                                                            </label>
+                                                                                                                                                            <label class="item">
+                                                                                                                                                                <span class="title"><input type="radio" class="option" name="notifications" value="0" /> Disable</span>
+                                                                                                                                                            </label>
+                                                                                                                                                        </div>
+                                                                                                                                                        <br />
+                                                                                                                                                        <fieldset class="submitHolder">
+                                                                                                                                                            <input class="submit" type="submit" value="Update" />
+                                                                                                                                                        </fieldset>
+                                                                                                                                                    </form>
+                                                                                                                                                </div>
+                                                                                                                                                <div class="banner center" data-banner="bottom_banner" ></div>
+                                                                                                                                            </div>
+
+                                                                                                                                            <!-- ######################## Agenda ######################## -->
+
+                                                                                                                                            <div class="holders" id="agenda-students" data-callback="get_agenda_students">
+
+                                                                                                                                                <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                                                                                <h1><span class="color">Agenda</span></h1>
+
+                                                                                                                                                <div class="content">
+                                                                                                                                                    <div class="items listings"></div>
+                                                                                                                                                    <script id="template_agenda_students" type="text/html">
+                                                                                                                                                        <div class="item">
+                                                                                                                                                            <div class="titleBox">
+                                                                                                                                                                <span class="title"><a href="#agenda-student" data-id="{{id}}">{{full_name}}</a></span>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="clearfix"></div>
+                                                                                                                                                        </div>
+                                                                                                                                                        </script>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                                                                </div>
+
+                                                                                                                                                <div class="holders" id="agenda-student" data-callback="get_agenda_student">
+
+                                                                                                                                                    <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                                                                                    <h1><span class="color">Agenda</span></h1>
+
+                                                                                                                                                    <div class="content">
+                                                                                                                                                        <div class="items listings listings_banners_private"></div>
+                                                                                                                                                        <div class="load_more"></div>
+                                                                                                                                                        <script id="template_agenda_student" type="text/html">
+                                                                                                                                                            <div class="item">
+                                                                                                                                                                <div class="titleBox">
+                                                                                                                                                                    <span class="title">{{title}}</span>
+                                                                                                                                                                    <span class="date">{{teacher_name}}</span>
+                                                                                                                                                                </div>
+                                                                                                                                                                <div class="description">{{description}}</div>
+                                                                                                                                                                <div class="clearfix"></div>
+                                                                                                                                                            </div>
+                                                                                                                                                            </script>
+                                                                                                                                                        </div>
+                                                                                                                                                        <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                                                                    </div>
+
+                                                                                                                                                    <!-- ######################## Change School ######################## -->
+
+                                                                                                                                                    <div class="holders" id="change-school" data-callback="change_school">
+
+                                                                                                                                                        <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                                                        <h1>Change <span class="color">School</span></h1>
+
+                                                                                                                                                        <div class="content">
+
+                                                                                                                                                            <div class="items listings"></div>
+                                                                                                                                                            <script id="template_change_school" type="text/html">
+                                                                                                                                                                <div class="item">
+                                                                                                                                                                    <div class="details">
+                                                                                                                                                                        <div class="titleBox">
+                                                                                                                                                                            <span class="title"><a href="#" onclick="_change_school_to({{id}});">{{title}}</a></span>
+                                                                                                                                                                        </div>
+                                                                                                                                                                    </div>
+                                                                                                                                                                    <div class="clearfix"></div>
+                                                                                                                                                                </div>
+                                                                                                                                                                </script>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="banner center" data-banner="bottom_banner" ></div>
+                                                                                                                                                        </div>
+                                                                                                                                                        <!-- ######################## About School ######################## -->
+
+                                                                                                                                                        <div class="holders" id="about-school" data-callback="about_school">
+
+                                                                                                                                                            <div class="banner center" data-banner="top_banner_private" ></div>
+                                                                                                                                                            <h1>About <span class="color rname">School</span></h1>
+
+                                                                                                                                                            <div class="content">
+                                                                                                                                                                <div class="about"></div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="banner center" data-banner="bottom_banner_private" ></div>
+                                                                                                                                                        </div>
+                                                                                                                                                        <!-- ######################## Login Form ######################## -->
+
+                                                                                                                                                        <div class="holders" id="login" data-callback="_reset_inputs">
+
+                                                                                                                                                            <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                                                            <h1>Log<span class="color">in</span></h1>
+
+                                                                                                                                                            <div class="content">
+                                                                                                                                                                <form action="#" method="post" id="login_form" onsubmit="return _login(this);">
+                                                                                                                                                                    <input type="hidden" name="regid" value="" id="regidCode" />
+                                                                                                                                                                    <input type="hidden" name="source" value="android" />
+                                                                                                                                                                    
+                                                                                                                                                                    <div class="errorHolder">
+                                                                                                                                                                        <div class="errors"></div>
+                                                                                                                                                                    </div>
+
+                                                                                                                                                                    <fieldset>
+                                                                                                                                                                        <label>Mobile</label>
+                                                                                                                                                                        <input class="input mobile" type="number" name="mobile" placeHolder="Mobile Number" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                    <fieldset>
+                                                                                                                                                                        <label>Password</label>
+                                                                                                                                                                        <input class="input password" type="password" name="password" placeHolder="Password" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                    <fieldset class="center submitHolder">
+                                                                                                                                                                        <input class="submit" type="submit" value="Login" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                    <fieldset class="center">
+                                                                                                                                                                        <div>&nbsp;</div>
+                                                                                                                                                                        <div>&nbsp;</div>
+                                                                                                                                                                        <div>
+                                                                                                                                                                            <input class="button" type="button" value="Register" onclick="_changeHolder('register');" />
+                                                                                                                                                                            &nbsp;&nbsp;
+                                                                                                                                                                            <input class="button" type="button" value="Forget Password" onclick="_changeHolder('pwd');" />
+                                                                                                                                                                        </div>
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                </form>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="banner center" data-banner="bottom_banner" ></div>			
+                                                                                                                                                        </div>
+
+                                                                                                                                                        <!-- ######################## reset password Form ######################## -->
+
+                                                                                                                                                        <div class="holders" id="pwd" data-callback="_reset_inputs">
+
+                                                                                                                                                            <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                                                            <h1>Forget <span class="color">Password</span></h1>
+
+                                                                                                                                                            <div class="content">
+                                                                                                                                                                <form action="#" method="post" id="pwd_form" onsubmit="return _pwd(this);">
+                                                                                                                                                                    <div class="errorHolder">
+                                                                                                                                                                        <div class="errors"></div>
+                                                                                                                                                                    </div>
+
+                                                                                                                                                                    <fieldset>
+                                                                                                                                                                        <label>Mobile</label>
+                                                                                                                                                                        <input class="input mobile" type="number" name="mobile" placeHolder="Mobile Number" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                    <fieldset class="center submitHolder">
+                                                                                                                                                                        <input class="submit" type="submit" value="Re-send Password" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                </form>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="banner center" data-banner="bottom_banner" ></div>
+                                                                                                                                                        </div>
+
+                                                                                                                                                        <!-- ######################## Register Form ######################## -->
+
+                                                                                                                                                        <div class="holders" id="register" data-callback="_reset_inputs">
+
+                                                                                                                                                            <div class="banner center" data-banner="top_banner" ></div>
+                                                                                                                                                            <h1>Re<span class="color">gister</span></h1>
+
+                                                                                                                                                            <div class="content">
+                                                                                                                                                                <form action="#" method="post" id="register_form" onsubmit="return _register(this);">
+                                                                                                                                                                    <div class="errorHolder">
+                                                                                                                                                                        <div class="errors"></div>
+                                                                                                                                                                    </div>
+
+                                                                                                                                                                    <fieldset>
+                                                                                                                                                                        <label>Full Name</label>
+                                                                                                                                                                        <input class="input" type="text" name="full_name" placeHolder="Full Name" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                    <fieldset>
+                                                                                                                                                                        <label>Mobile Number</label>
+                                                                                                                                                                        <input class="input mobile" type="number" name="mobile" placeHolder="Mobile Number" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                    <fieldset>
+                                                                                                                                                                        <label>Phone Number (06)</label>
+                                                                                                                                                                        <input class="input" type="number" name=phone placeHolder="Phone Number" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                    <fieldset>
+                                                                                                                                                                        <label>E-mail</label>
+                                                                                                                                                                        <input class="input" type="email" name="email" placeHolder="E-mail" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                    <fieldset>
+                                                                                                                                                                        <label>Address</label>
+                                                                                                                                                                        <input class="input" type="text" name="address" placeHolder="Address" />
+                                                                                                                                                                    </fieldset>
+
+                                                                                                                                                                    <fieldset class="center submitHolder">
+                                                                                                                                                                        <input class="submit" type="submit" value="Register" />
+                                                                                                                                                                    </fieldset>
+                                                                                                                                                                </form>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="banner center" data-banner="bottom_banner" ></div>
+                                                                                                                                                        </div>
+
+
+                                                                                                                                                        <!-- ######################## **END** ######################## -->
+
+
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                            </div><!-- /scroller-inner -->
+
+
+
+
+                                                                                                                                            <div id="loader">
+                                                                                                                                                <img class="img" src="images/ajax-loader.gif" border="0" />
+                                                                                                                                                <div class="msg"></div>
+                                                                                                                                            </div>
+                                                                                                                                        </div><!-- /scroller -->
+
+                                                                                                                                    </div><!-- /pusher -->
+                                                                                                                                </div><!-- /container -->
+                                                                                                                                <script src="js/classie.js"></script>
+                                                                                                                                <script src="js/mlpushmenu.js"></script>
+                                                                                                                                <script>
+                                                                                                                                    _menu = new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'), {
+                                                                                                                                        open: function () {
+                                                                                                                                            _reloadScroolPanel();
+                                                                                                                                        }
+                                                                                                                                    });
+                                                                                                                                </script>
+                                                                                                                            </body>
+                                                                                                                        </html>

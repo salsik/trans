@@ -1,0 +1,6 @@
+Options +FollowSymLinks
+Options -Multiviews
+RewriteEngine On
+
+
+RewriteRule ^frame/?$		frame.html [L,QSA]
