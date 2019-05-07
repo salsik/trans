@@ -1,5 +1,10 @@
 <?php 
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With');
+header('Access-Control-Allow-Methods: GET, PUT, POST');
+
+
 // Meta tags, CSS and others should be included here
 /*
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"

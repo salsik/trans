@@ -12,6 +12,13 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
+
+
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With');
+header('Access-Control-Allow-Methods: GET, PUT, POST');
+
+
 //makeLogFile( $_SERVER['REQUEST_URI'] );
 
 define('isAjaxRequest', true);
@@ -727,6 +734,7 @@ switch ($action) {
                     'title' => $competition['title'],
                     'description' => $competition['description'],
                     'option_id' => $competition['option_id'],
+                    'answer_id' => $competition['answer_id'],
                     'date' => date('Y-m-d', $competition['time']),
                     'image' => ($competition['image']) ? $_SITE_PATH_ . 'uploads/competitions/thumb/' . $competition['image'] : $previsionDefaultImage,
                 );
@@ -1140,15 +1148,15 @@ switch ($action) {
         $mobile = $_REQUEST['mobile'];
         $hospital = $_REQUEST['hospital'];
         $specialization = $_REQUEST['specialization'];
-		$city_selection = $_REQUEST['city_selection'];
+		$city_selection = $_REQUEST['city'];
+		$bod = $_REQUEST['bod'];
       										  
 
 
         $ImageFileName=null ;
 
 
-
-
+		
 
         $regid = array();
 
@@ -1161,7 +1169,8 @@ switch ($action) {
         }
 
 
- 
+		 $response['error'] = $error;
+
 
 
           if( isset($_FILES['image']) && $_FILES['image']['size']>0 ){
@@ -2185,12 +2194,18 @@ function buildLoginResponse($key, $Categories, $account, $reseller,$_SITE_PATH_)
         
     }
 
+
     $response['account'] = array(
         'id' => $account['id'],
         'first_name' => $account['first_name'],
         'last_name' => $account['last_name'],
         'full_name' => $account['full_name'],
         'email' => $account['email'],
+        'info_email' => $account['info_email'],
+        'mobile' => $account['info_mobile'],
+        'bod' => $account['date'],
+        'hospital' => $account['hospital'],
+        'city' => $account['city'],
         'profile_form' => $profileForm,
         'notifications' => $account['notifications'],
         'image' => ($account['image']) ? $_SITE_PATH_ . 'uploads/doctors/thumb/' . $account['image'] : $previsionDefaultImage,
